@@ -2,13 +2,10 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,6 +22,7 @@ public class ViewsClient extends JFrame {
     JPanel contenPageCenter;
     JPanel imageSelected;
     JScrollPane scroll;
+    ArrayList<JButton> listButons;
 
     public ViewsClient(ActionListener listener) {
         setSize(500, 500);
@@ -61,13 +59,20 @@ public class ViewsClient extends JFrame {
     }
 
     public void paintImages(ArrayList<ImageIcon> images) {
-
+        listButons = new ArrayList<>();
         panelContenImages = new JPanel();
-        panelContenImages.setBackground(Color.RED);
-
+        int position = -1;
         for (ImageIcon imageIcon : images) {
-            ImageIcon img = new ImageIcon(imageIcon.getImage().getScaledInstance(70, 70, Image.SCALE_AREA_AVERAGING));
-            panelContenImages.add(new JLabel(img));
+            position++;
+            JButton button = new JButton();
+            button.setContentAreaFilled(false);
+            button.setBorder(null);
+            panelContenImages.add(button);
+            ImageIcon img = new ImageIcon(imageIcon.getImage().getScaledInstance(80, 70, Image.SCALE_AREA_AVERAGING));
+            button.setIcon(img);
+            button.setActionCommand(position + "");
+            button.addActionListener(listener);
+            listButons.add(button);
         }
         contenPageCenter.remove(scroll);
         scroll = new JScrollPane(panelContenImages);
@@ -75,6 +80,18 @@ public class ViewsClient extends JFrame {
         contenPageCenter.add(scroll, BorderLayout.PAGE_END);
         contenPageCenter.revalidate();
         repaint();
-        repaint();
     }
+
+    public void paintImageSelected(ImageIcon image) {
+        ImageIcon img = new ImageIcon(image.getImage().getScaledInstance(imageSelected.getWidth(),
+                imageSelected.getHeight(), Image.SCALE_SMOOTH));
+        imageSelected.removeAll();
+        JLabel viewImage = new JLabel(img);
+        imageSelected.add(viewImage);
+        contenPageCenter.add(imageSelected, BorderLayout.CENTER);
+        imageSelected.repaint();
+        contenPageCenter.revalidate();
+        contenPageCenter.repaint();
+    }
+
 }

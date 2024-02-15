@@ -37,18 +37,27 @@ public class ControllerCopy implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        switch (ACTIONS.valueOf(e.getActionCommand())) {
-            case ENVIAR:
-                System.out.println("solicita enviar imagen");
-                break;
-            case SOLICITAR:
-                ImageIcon im = new ImageIcon("C:\\Users\\yudy lopez\\Pictures/1949.jpg");
-                images.add(im);
-                viewClient.paintImages(images);
-                System.out.println("solicita recibir imagen");
-                break;
-            default:
-                break;
+        try {
+            switch (ACTIONS.valueOf(e.getActionCommand())) {
+                case ENVIAR:
+                    System.out.println("solicita enviar imagen");
+                    break;
+                case SOLICITAR:
+                    ImageIcon im = new ImageIcon("C:\\Users\\yudy lopez\\Pictures/1949.jpg");
+                    images.add(im);
+                    ImageIcon iml = new ImageIcon("C:\\Users\\yudy lopez\\Pictures/1948.jpg");
+                    images.add(iml);
+                    viewClient.paintImages(images);
+                    System.out.println("solicita recibir imagen");
+                    break;
+                default:
+                    break;
+            }
+        } catch (Exception ex) {
+            int position = Integer.parseInt(e.getActionCommand().toString());
+            System.out.println(position);
+            viewClient.paintImageSelected(images.get(position));
+
         }
 
     }
