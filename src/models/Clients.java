@@ -16,7 +16,7 @@ public class Clients {
     Socket socket;
     OutputStream output;
     InputStream input;
-    String name = "fernando";
+    String name = "jkhkkh";
     ArrayList<ImageIcon> listImages;
 
     public Clients(String ip, int port) {
@@ -27,6 +27,7 @@ public class Clients {
             input = socket.getInputStream();
             output.write(name.getBytes().length);
             output.write(name.getBytes());
+            solicitarImagenes();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -39,13 +40,19 @@ public class Clients {
     }
 
     public void solicitarImagenes() throws IOException {
-        output.write(0);
-        int images = input.read();
-        for (int i = 0; i < images; i++) {
-            int bytesIn = input.read();
-            byte[] byteImages = new byte[bytesIn];
-            listImages.add(bytesToImage(byteImages));
+        int cantidadImagenes = input.read();
+        for (int i = 0; i < cantidadImagenes; i++) {
+            int longName = input.read();
+            byte[] name = new byte[longName];
+            input.read(name);
+            String nameClient = new String(name);
+            System.out.println(nameClient + "");
+            byte[] tamanioImage = new byte[Integer.parseInt(nameClient)];
+            input.read(tamanioImage);
+            listImages.add(bytesToImage(tamanioImage));
         }
+        System.out.println(" final mente");
+
     }
 
     private ImageIcon bytesToImage(byte[] imageBytes) {
@@ -67,5 +74,9 @@ public class Clients {
             e.printStackTrace();
         }
         return imageBytes;
+    }
+
+    public ArrayList<ImageIcon> getListImages() {
+        return listImages;
     }
 }

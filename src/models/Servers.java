@@ -3,7 +3,6 @@ package models;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -16,15 +15,17 @@ import javax.swing.ImageIcon;
 public class Servers {
 
     ServerSocket serverSocket;
-    OutputStream output;
     InputStream input;
     ArrayList<Client> listClients;
     ArrayList<ImageIcon> listImages;
 
     public Servers(int port) {
         listClients = new ArrayList<>();
+        listImages = new ArrayList<>();
+        imagenesPrecargadas();
         try {
             serverSocket = new ServerSocket(port);
+
             System.out.println("Servidor escuchando en el puerto " +
                     serverSocket.getLocalPort() + " " + LocalDateTime.now());
             while (true) {
@@ -38,6 +39,7 @@ public class Servers {
                 System.out.println(
                         " Cliente " + clientSocket.getInetAddress() + "conectado al servidor: "
                                 + LocalDateTime.now());
+                sendImages(clientSocket, listImages);
             }
 
         } catch (IOException e) {
@@ -45,12 +47,12 @@ public class Servers {
         }
     }
 
-    public void broadcastMessage(String clientAddress, String message) {
+    public void broadcastMessage(Socket clientAddress, String message) {
         for (Client socket : listClients) {
             if (!message.contains(socket.getNombre())) {
                 try {
-                    output.write(message.getBytes().length);
-                    output.write(message.getBytes());
+                    clientAddress.getOutputStream().write(message.getBytes().length);
+                    clientAddress.getOutputStream().write(message.getBytes());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -58,13 +60,18 @@ public class Servers {
         }
     }
 
-    public void sendImages(String clientAddress, ArrayList<ImageIcon> images) throws IOException {
-        output.write(images.size());
+    public void sendImages(Socket clientAddress, ArrayList<ImageIcon> images) throws IOException {
+        clientAddress.getOutputStream().write(images.size());
         for (ImageIcon imageIcon : images) {
             byte[] bytesImage = imageToBytes(imageIcon);
-            output.write(bytesImage.length);
-            output.write(bytesImage);
+            System.out.println("Datos a enviar " + bytesImage.length + " jhjjj " + (int) ((byte) bytesImage.length));
+            clientAddress.getOutputStream().write(String.valueOf(bytesImage.length).getBytes().length);
+            clientAddress.getOutputStream().write(String.valueOf(bytesImage.length).getBytes());
+            clientAddress.getOutputStream().flush();
+            clientAddress.getOutputStream().write(bytesImage);
+            clientAddress.getOutputStream().flush();
         }
+        System.out.println("Datos enviados con exito");
     }
 
     public void recibeImagen() throws IOException {
@@ -78,7 +85,6 @@ public class Servers {
     }
 
     private byte[] imageToBytes(ImageIcon image) {
-
         BufferedImage bufferedImage = new BufferedImage(
                 image.getIconWidth(),
                 image.getIconHeight(),
@@ -93,5 +99,13 @@ public class Servers {
             e.printStackTrace();
         }
         return imageBytes;
+    }
+
+    private void imagenesPrecargadas() {
+        ImageIcon im = new ImageIcon("C:\\Users\\yudy lopez\\Pictures/1949.jpg");
+        listImages.add(im);
+        ImageIcon iml = new ImageIcon("C:\\Users\\yudy lopez\\Pictures/1948.jpg");
+        listImages.add(iml);
+
     }
 }

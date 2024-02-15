@@ -26,6 +26,8 @@ public class ViewsClient extends JFrame {
 
     public ViewsClient(ActionListener listener) {
         setSize(500, 500);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(rootPane);
         setLayout(new BorderLayout());
         this.listener = listener;
 

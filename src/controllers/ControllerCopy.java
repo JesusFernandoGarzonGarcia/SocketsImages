@@ -2,9 +2,7 @@ package controllers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.swing.ImageIcon;
 
 import models.Clients;
@@ -13,22 +11,20 @@ import views.ViewsClient;
 public class ControllerCopy implements ActionListener {
     ViewsClient viewClient;
     ArrayList<ImageIcon> images;
+    Clients client;
 
     public ControllerCopy() {
 
-        ImageIcon im = new ImageIcon("C:\\Users\\yudy lopez\\Pictures/1949.jpg");
         images = new ArrayList<>();
-        images.add(im);
         viewClient = new ViewsClient(this);
-        // new Servers(15555);
-        // Clients client = new Clients("localhost", 15555);
 
-        // try {
-        // client.solicitarImagenes();
-        // } catch (IOException e) {
+        client = new Clients("localhost", 15555);
 
-        // e.printStackTrace();
-        // }
+        images = client.getListImages();
+        System.out.println(images.size() + " cantidad de imagenes recibidas " + " cantidad de imagenes almacenadas "
+                + images.size());
+        viewClient.paintImages(client.getListImages());
+
     }
 
     public static void main(String[] args) {
@@ -43,10 +39,8 @@ public class ControllerCopy implements ActionListener {
                     System.out.println("solicita enviar imagen");
                     break;
                 case SOLICITAR:
-                    ImageIcon im = new ImageIcon("C:\\Users\\yudy lopez\\Pictures/1949.jpg");
-                    images.add(im);
-                    ImageIcon iml = new ImageIcon("C:\\Users\\yudy lopez\\Pictures/1948.jpg");
-                    images.add(iml);
+                    // client.solicitarImagenes();
+                    // images = client.getListImages();
                     viewClient.paintImages(images);
                     System.out.println("solicita recibir imagen");
                     break;
