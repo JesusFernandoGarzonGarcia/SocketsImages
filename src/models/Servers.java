@@ -40,6 +40,8 @@ public class Servers {
                         " Cliente " + clientSocket.getInetAddress() + "conectado al servidor: "
                                 + LocalDateTime.now());
                 sendImages(clientSocket, listImages);
+                recibeImagen(clientSocket);
+                sendImages(clientSocket, listImages);
             }
 
         } catch (IOException e) {
@@ -74,10 +76,15 @@ public class Servers {
         System.out.println("Datos enviados con exito");
     }
 
-    public void recibeImagen() throws IOException {
-        int bytesIn = input.read();
-        byte[] byteImages = new byte[bytesIn];
-        listImages.add(bytesToImage(byteImages));
+    public void recibeImagen(Socket socket) throws IOException {
+        int longName = socket.getInputStream().read();
+        byte[] name = new byte[longName];
+        socket.getInputStream().read(name);
+        String nameClient = new String(name);
+        System.out.println(nameClient + "");
+        byte[] tamanioImage = new byte[Integer.parseInt(nameClient)];
+        socket.getInputStream().read(tamanioImage);
+        listImages.add(bytesToImage(tamanioImage));
     }
 
     private ImageIcon bytesToImage(byte[] imageBytes) {

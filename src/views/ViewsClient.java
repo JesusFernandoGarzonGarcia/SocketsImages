@@ -5,9 +5,15 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -94,6 +100,37 @@ public class ViewsClient extends JFrame {
         imageSelected.repaint();
         contenPageCenter.revalidate();
         contenPageCenter.repaint();
+    }
+
+    public String obtenerImagen() {
+        JFileChooser fileChooser = new JFileChooser();
+
+        // Establecer la ruta predeterminada al directorio de imágenes del sistema
+        String defaultDirectory = System.getProperty("user.home") + File.separator + "Pictures";
+        fileChooser.setCurrentDirectory(new File(defaultDirectory));
+
+        // Configurar el filtro para que solo muestre archivos de imágenes
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
+            public boolean accept(File file) {
+                return file.isDirectory() || file.getName().toLowerCase().endsWith(".jpg")
+                        || file.getName().toLowerCase().endsWith(".jpeg")
+                        || file.getName().toLowerCase().endsWith(".png")
+                        || file.getName().toLowerCase().endsWith(".gif");
+            }
+
+            public String getDescription() {
+                return "Image files (*.jpg, *.jpeg, *.png, *.gif)";
+            }
+        });
+
+        int result = fileChooser.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+
+            System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+            return selectedFile.getAbsolutePath();
+        }
+        return null;
     }
 
 }

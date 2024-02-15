@@ -36,7 +36,7 @@ public class ControllerCopy implements ActionListener {
         try {
             switch (ACTIONS.valueOf(e.getActionCommand())) {
                 case ENVIAR:
-                    System.out.println("solicita enviar imagen");
+                    client.enviarImagen(client.convertirStringAImagen(viewClient.obtenerImagen()));
                     break;
                 case SOLICITAR:
                     // client.solicitarImagenes();

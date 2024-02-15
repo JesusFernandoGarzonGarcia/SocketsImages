@@ -16,7 +16,7 @@ public class Clients {
     Socket socket;
     OutputStream output;
     InputStream input;
-    String name = "jkhkkh";
+    String name = "Fernando";
     ArrayList<ImageIcon> listImages;
 
     public Clients(String ip, int port) {
@@ -28,15 +28,25 @@ public class Clients {
             output.write(name.getBytes().length);
             output.write(name.getBytes());
             solicitarImagenes();
+            enviarImagen(new ImageIcon("C:\\Users\\yudy lopez\\Pictures/Nueva invitacionDG.png"));
+            solicitarImagenes();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void enviarImagen(ImageIcon image) throws IOException {
-        byte[] byteImage = imageToBytes(image);
-        output.write(byteImage.length);
-        output.write(byteImage);
+        byte[] bytesImage = imageToBytes(image);
+        output.write(String.valueOf(bytesImage.length).getBytes().length);
+        output.write(String.valueOf(bytesImage.length).getBytes());
+        output.flush();
+        output.write(bytesImage);
+        output.flush();
+    }
+
+    public ImageIcon convertirStringAImagen(String data) {
+        return new ImageIcon(data);
     }
 
     public void solicitarImagenes() throws IOException {
@@ -51,8 +61,6 @@ public class Clients {
             input.read(tamanioImage);
             listImages.add(bytesToImage(tamanioImage));
         }
-        System.out.println(" final mente");
-
     }
 
     private ImageIcon bytesToImage(byte[] imageBytes) {
