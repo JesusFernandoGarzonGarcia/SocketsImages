@@ -27,9 +27,20 @@ public class Clients {
             input = socket.getInputStream();
             output.write(name.getBytes().length);
             output.write(name.getBytes());
-            solicitarImagenes();
-            enviarImagen(new ImageIcon("C:\\Users\\yudy lopez\\Pictures/Nueva invitacionDG.png"));
-            solicitarImagenes();
+            // solicitarImagenes();
+            // enviarImagen(new ImageIcon("C:\\Users\\yudy lopez\\Pictures/Nueva
+            // invitacionDG.png"));
+            // solicitarImagenes();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendRequest(int name) {
+        try {
+            // output.write(name.getBytes().length);
+            output.write(name);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -38,9 +49,10 @@ public class Clients {
 
     public void enviarImagen(ImageIcon image) throws IOException {
         byte[] bytesImage = imageToBytes(image);
+        System.out.println("TAmanio real de la imagen" + bytesImage.length);
         output.write(String.valueOf(bytesImage.length).getBytes().length);
         output.write(String.valueOf(bytesImage.length).getBytes());
-        output.flush();
+        System.out.println("Datos a enviar ()" + bytesImage.length);
         output.write(bytesImage);
         output.flush();
     }
@@ -50,15 +62,17 @@ public class Clients {
     }
 
     public void solicitarImagenes() throws IOException {
+        listImages.clear();
         int cantidadImagenes = input.read();
         for (int i = 0; i < cantidadImagenes; i++) {
             int longName = input.read();
             byte[] name = new byte[longName];
             input.read(name);
             String nameClient = new String(name);
-            System.out.println(nameClient + "");
+            System.out.println(nameClient + " estos son los recibidos");
             byte[] tamanioImage = new byte[Integer.parseInt(nameClient)];
             input.read(tamanioImage);
+            System.out.println(tamanioImage.length + "estos son los leidos");
             listImages.add(bytesToImage(tamanioImage));
         }
     }

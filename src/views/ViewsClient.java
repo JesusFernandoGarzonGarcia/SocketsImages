@@ -2,15 +2,14 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
+import java.awt.event.MouseListener;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -19,7 +18,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-public class ViewsClient extends JFrame {
+public class ViewsClient extends JFrame
+        implements MouseListener {
 
     JPanel panelContenImages;
     JButton butonSend;
@@ -31,32 +31,56 @@ public class ViewsClient extends JFrame {
     ArrayList<JButton> listButons;
 
     public ViewsClient(ActionListener listener) {
-        setSize(500, 500);
+        super("Galeria Online");
+        setSize(600, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(rootPane);
         setLayout(new BorderLayout());
+        setIconImage(new ImageIcon(getClass().getResource("/img/logo.png")).getImage());
+        setBackground(Color.WHITE);
+        setResizable(false);
         this.listener = listener;
 
+        Font font = new Font("ARIAL", Font.BOLD, 15);
         contenPageCenter = new JPanel();
         contenPageCenter.setBackground(Color.GRAY);
         contenPageCenter.setLayout(new BorderLayout());
-
+        contenPageCenter.setBorder(null);
         imageSelected = new JPanel();
-        imageSelected.setBackground(Color.GRAY);
-
+        imageSelected.setBackground(Color.WHITE);
+        imageSelected.setBorder(null);
         panelContenImages = new JPanel();
+        panelContenImages.setBackground(Color.WHITE);
+        panelContenImages.setBorder(null);
         scroll = new JScrollPane(panelContenImages);
-
+        scroll.setBackground(Color.WHITE);
+        scroll.setBorder(null);
+        contenPageCenter.setBorder(null);
+        contenPageCenter.setBackground(Color.WHITE);
         contenPageCenter.add(imageSelected, BorderLayout.CENTER);
         contenPageCenter.add(scroll, BorderLayout.PAGE_END);
 
         JPanel panelContenButons = new JPanel();
         panelContenButons.setLayout(new GridLayout(1, 2));
-        butonSend = new JButton("Enviar Imagen");
+        panelContenButons.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        panelContenButons.setBackground(Color.WHITE);
+
+        butonSend = new JButton("ENVIAR IMAGEN");
+        butonSend.setFont(font);
+        butonSend.setContentAreaFilled(false);
+        butonSend.setBorder(null);
+        butonSend.setFocusPainted(false);
         butonSend.addActionListener(listener);
         butonSend.setActionCommand("ENVIAR");
-        butonSolicitar = new JButton("Solicitar imagenes");
+        butonSend.setBackground(Color.BLUE);
+        butonSend.addMouseListener(this);
+        butonSolicitar = new JButton("DESCARGAR GALERIA");
+        butonSolicitar.setFont(font);
+        butonSolicitar.setContentAreaFilled(false);
+        butonSolicitar.setFocusPainted(false);
+        butonSolicitar.setBorder(null);
         butonSolicitar.addActionListener(listener);
+        butonSolicitar.addMouseListener(this);
         butonSolicitar.setActionCommand("SOLICITAR");
         panelContenButons.add(butonSend);
         panelContenButons.add(butonSolicitar);
@@ -69,6 +93,7 @@ public class ViewsClient extends JFrame {
     public void paintImages(ArrayList<ImageIcon> images) {
         listButons = new ArrayList<>();
         panelContenImages = new JPanel();
+        panelContenImages.setBackground(Color.WHITE);
         int position = -1;
         for (ImageIcon imageIcon : images) {
             position++;
@@ -85,17 +110,22 @@ public class ViewsClient extends JFrame {
         contenPageCenter.remove(scroll);
         scroll = new JScrollPane(panelContenImages);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        scroll.setBackground(Color.WHITE);
+        contenPageCenter.setBackground(Color.WHITE);
         contenPageCenter.add(scroll, BorderLayout.PAGE_END);
         contenPageCenter.revalidate();
         repaint();
     }
 
     public void paintImageSelected(ImageIcon image) {
-        ImageIcon img = new ImageIcon(image.getImage().getScaledInstance(imageSelected.getWidth(),
-                imageSelected.getHeight(), Image.SCALE_SMOOTH));
+        ImageIcon img = new ImageIcon(image.getImage().getScaledInstance(imageSelected.getWidth() - 50,
+                imageSelected.getHeight() - 50, Image.SCALE_SMOOTH));
         imageSelected.removeAll();
         JLabel viewImage = new JLabel(img);
+        viewImage.setBackground(Color.WHITE);
+        imageSelected.setBackground(Color.WHITE);
         imageSelected.add(viewImage);
+        viewImage.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         contenPageCenter.add(imageSelected, BorderLayout.CENTER);
         imageSelected.repaint();
         contenPageCenter.revalidate();
@@ -131,6 +161,28 @@ public class ViewsClient extends JFrame {
             return selectedFile.getAbsolutePath();
         }
         return null;
+    }
+
+    @Override
+    public void mouseClicked(java.awt.event.MouseEvent e) {
+    }
+
+    @Override
+    public void mousePressed(java.awt.event.MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(java.awt.event.MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(java.awt.event.MouseEvent e) {
+        e.getComponent().setForeground(Color.BLUE);
+    }
+
+    @Override
+    public void mouseExited(java.awt.event.MouseEvent e) {
+        e.getComponent().setForeground(Color.BLACK);
     }
 
 }
