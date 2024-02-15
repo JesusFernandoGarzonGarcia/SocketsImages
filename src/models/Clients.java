@@ -10,36 +10,37 @@ import java.net.Socket;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 public class Clients {
 
     Socket socket;
     OutputStream output;
     InputStream input;
-    String name = "Fernando";
+    String name;
     ArrayList<ImageIcon> listImages;
+    boolean isConection = false;
 
-    public Clients(String ip, int port) {
+    public Clients(String ip, int port, String name) {
         try {
             socket = new Socket(ip, port);
+            isConection = true;
+            this.name = name;
             listImages = new ArrayList<ImageIcon>();
             output = socket.getOutputStream();
             input = socket.getInputStream();
             output.write(name.getBytes().length);
             output.write(name.getBytes());
-            // solicitarImagenes();
-            // enviarImagen(new ImageIcon("C:\\Users\\yudy lopez\\Pictures/Nueva
-            // invitacionDG.png"));
-            // solicitarImagenes();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al conectarse con el servidor", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
         }
     }
 
     public void sendRequest(int name) {
         try {
-            // output.write(name.getBytes().length);
             output.write(name);
 
         } catch (IOException e) {
@@ -100,5 +101,9 @@ public class Clients {
 
     public ArrayList<ImageIcon> getListImages() {
         return listImages;
+    }
+
+    public boolean isConection() {
+        return isConection;
     }
 }

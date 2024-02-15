@@ -2,28 +2,27 @@ package controllers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
 import models.Clients;
+import views.Views;
 import views.ViewsClient;
 
 public class ControllerCopy implements ActionListener {
     ViewsClient viewClient;
     ArrayList<ImageIcon> images;
     Clients client;
+    String[] data;
+    Views v;
 
     public ControllerCopy() {
 
-        images = new ArrayList<>();
-        viewClient = new ViewsClient(this);
-
-        client = new Clients("localhost", 15555);
-
-        images = client.getListImages();
-        System.out.println(images.size() + " cantidad de imagenes recibidas " + " cantidad de imagenes almacenadas "
-                + images.size());
-        viewClient.paintImages(client.getListImages());
+        v = new Views(this, null);
+        data = v.getDataConection();
+        v.setVisible(true);
 
     }
 
@@ -41,7 +40,6 @@ public class ControllerCopy implements ActionListener {
                         client.sendRequest(0);
                         client.enviarImagen(imageSelected);
                     } catch (Exception ex) {
-                        // TODO: handle exception
                     }
                     break;
                 case SOLICITAR:
@@ -52,6 +50,14 @@ public class ControllerCopy implements ActionListener {
                         viewClient.paintImages(images);
                     } catch (Exception exx) {
                         exx.printStackTrace();
+                    }
+                    break;
+                case ingresarAServidor:
+                    client = new Clients(data[0], 15555, data[1]);
+                    if (client.isConection()) {
+                        v.setVisible(false);
+                        viewClient = new ViewsClient(this);
+                        images = client.getListImages();
                     }
                     break;
                 default:
