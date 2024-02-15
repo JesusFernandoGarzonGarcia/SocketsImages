@@ -41,7 +41,7 @@ public class ViewsClient extends JFrame
         setResizable(false);
         this.listener = listener;
 
-        Font font = new Font("ARIAL", Font.BOLD, 15);
+        Font font = new Font("ITALIC", Font.BOLD, 15);
         contenPageCenter = new JPanel();
         contenPageCenter.setBackground(Color.GRAY);
         contenPageCenter.setLayout(new BorderLayout());

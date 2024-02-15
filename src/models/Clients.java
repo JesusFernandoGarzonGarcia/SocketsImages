@@ -1,5 +1,6 @@
 package models;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -7,7 +8,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
@@ -58,7 +58,7 @@ public class Clients {
     }
 
     public ImageIcon convertirStringAImagen(String data) {
-        return new ImageIcon(data);
+        return new ImageIcon(new ImageIcon(data).getImage().getScaledInstance(700, 700, Image.SCALE_AREA_AVERAGING));
     }
 
     public void solicitarImagenes() throws IOException {
