@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import controllers.ACTIONS;
+
 /**
  * clase Views encargada de mostrar el menu inicial al usuario
  */
@@ -25,7 +27,6 @@ public class Views extends JFrame {
 	private JTextField jTextField1;
 	private JTextField jTextField2;
 	private ActionListener action;
-	private KeyListener key;
 
 	private Boolean validate;
 
@@ -33,12 +34,10 @@ public class Views extends JFrame {
 	 * constructor de la clase views
 	 * 
 	 * @param action hilo de las acciones realizadas por el usuario
-	 * @param key    hilo de las acciones por teclado realizadas por el usuario
 	 */
 
-	public Views(ActionListener action, KeyListener key) {
+	public Views(ActionListener action) {
 		this.action = action;
-		this.key = key;
 		validate = true;
 		initComponents();
 	}
@@ -54,7 +53,6 @@ public class Views extends JFrame {
 		setTitle("Galeria online");
 
 		getContentPane().setBackground(Color.WHITE);
-		addKeyListener(key);
 		setIconImage(new ImageIcon(getClass().getResource("/img/logo.png")).getImage());
 
 		jLabel1 = new JLabel();
@@ -68,10 +66,10 @@ public class Views extends JFrame {
 
 		jTextField1.setBorder(BorderFactory.createTitledBorder("Ingresa Nickname"));
 
-		jTextField2.setBorder(BorderFactory.createTitledBorder("Ingresa IP servidor"));
+		jTextField2.setBorder(BorderFactory.createTitledBorder("IP del servidor 0.0.0.0:0000"));
 
 		jButton1.setText("Ingresar");
-		jButton1.setActionCommand("ingresarAServidor");
+		jButton1.setActionCommand(ACTIONS.ingresarAServidor.toString());
 		jButton1.addActionListener(action);
 
 		GroupLayout layout = new GroupLayout(getContentPane());

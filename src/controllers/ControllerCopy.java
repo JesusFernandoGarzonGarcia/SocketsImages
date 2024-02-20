@@ -2,8 +2,6 @@ package controllers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
@@ -20,14 +18,9 @@ public class ControllerCopy implements ActionListener {
 
     public ControllerCopy() {
 
-        v = new Views(this, null);
-        data = v.getDataConection();
+        v = new Views(this);
         v.setVisible(true);
 
-    }
-
-    public static void main(String[] args) {
-        new ControllerCopy();
     }
 
     @Override
@@ -53,7 +46,9 @@ public class ControllerCopy implements ActionListener {
                     }
                     break;
                 case ingresarAServidor:
-                    client = new Clients(data[0], 15555, data[1]);
+                    String[] dataConection = data[0].split(":");
+                    System.out.println(dataConection[1]);
+                    client = new Clients(dataConection[0], Integer.parseInt(dataConection[1]), data[1]);
                     if (client.isConection()) {
                         v.setVisible(false);
                         viewClient = new ViewsClient(this);
@@ -64,9 +59,21 @@ public class ControllerCopy implements ActionListener {
                     break;
             }
         } catch (Exception ex) {
-            int position = Integer.parseInt(e.getActionCommand().toString());
-            System.out.println(position);
-            viewClient.paintImageSelected(images.get(position));
+            if (e.getActionCommand().equals("ingresarAServidor")) {
+                data = v.getDataConection();
+                String[] dataConection = data[0].split(":");
+                client = new Clients(dataConection[0], Integer.parseInt(dataConection[1]),
+                        data[1]);
+                if (client.isConection()) {
+                    v.setVisible(false);
+                    viewClient = new ViewsClient(this);
+                    images = client.getListImages();
+                }
+            } else {
+                int position = Integer.parseInt(e.getActionCommand().toString());
+                System.out.println(position);
+                viewClient.paintImageSelected(images.get(position));
+            }
 
         }
 
