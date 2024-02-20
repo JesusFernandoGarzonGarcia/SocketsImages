@@ -40,6 +40,7 @@ public class Views extends JFrame {
 		this.action = action;
 		validate = true;
 		initComponents();
+		mensajeServer();
 	}
 
 	/**
@@ -103,7 +104,6 @@ public class Views extends JFrame {
 								.addContainerGap(33, Short.MAX_VALUE)));
 
 		pack();
-		mensajeServer();
 	}
 
 	/**

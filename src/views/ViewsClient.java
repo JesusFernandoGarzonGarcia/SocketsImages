@@ -47,7 +47,7 @@ public class ViewsClient extends JFrame
         contenPageCenter.setLayout(new BorderLayout());
         contenPageCenter.setBorder(null);
         imageSelected = new JPanel();
-        imageSelected.setBackground(Color.WHITE);
+        imageSelected.setBackground(Color.GRAY);
         imageSelected.setBorder(null);
         panelContenImages = new JPanel();
         panelContenImages.setBackground(Color.WHITE);

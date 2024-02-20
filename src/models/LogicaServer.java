@@ -17,7 +17,7 @@ public class LogicaServer {
     public LogicaServer() {
         listClients = new ArrayList<>();
         listImages = new ArrayList<>();
-        imagenesPrecargadas();
+        // imagenesPrecargadas();
     }
 
     public void addClient(Socket socket, String name) {
